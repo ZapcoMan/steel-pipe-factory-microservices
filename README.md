@@ -72,7 +72,7 @@ npm install
 npm run dev
 
 # 小程序
-cd uniapp
+cd migrate-miniprogram
 npm install
 npm run dev:mp-weixin
 ```
@@ -96,7 +96,7 @@ npm run dev:mp-weixin
 | `/aboutUs/**` | content-service | 小程序直连 |
 | `/featuredCompany/**` | content-service | 小程序直连 |
 | `/obtainInformation/**` | content-service | 小程序直连 |
-| `/uniapp/**` | content-service | 小程序直连 |
+| `/migrate-miniprogram/**` | content-service | 小程序直连 |
 | `/files/**` | file-service | 小程序直连 |
 
 ## 认证机制
