@@ -6,16 +6,16 @@
 
 ```
 steel-pipe-factory-microservices/
-├── api-gateway/        # API 网关 (端口 8080)
-├── user-service/       # 用户服务 (端口 8081) — Admin/User 登录认证
-├── product-service/    # 产品服务 (端口 8082) — 钢材价格/样品展示
-├── content-service/    # 内容服务 (端口 8083) — 关于我们/精选企业/资讯
-├── file-service/       # 文件服务 (端口 8084) — 文件上传下载
-├── common/             # 公共模块 — R/ResultCodeEnum/Exception/Redis/CORS
-├── admin-frontend/     # Vue 管理后台 (Element Plus)
-├── migrate-miniprogram/             # 微信小程序 (UniApp)
-├── sql/                # 数据库初始化脚本
-└── docker-compose.yml  # Docker 编排
+├── api-gateway/         # API 网关 (端口 8080)
+├── user-service/        # 用户服务 (端口 8081) — Admin/User 登录认证
+├── product-service/     # 产品服务 (端口 8082) — 钢材价格/样品展示
+├── content-service/     # 内容服务 (端口 8083) — 关于我们/精选企业/资讯
+├── file-service/        # 文件服务 (端口 8084) — 文件上传下载
+├── common/              # 公共模块 — R/ResultCodeEnum/Exception/Redis/CORS
+├── admin-frontend/      # Vue 管理后台 (Element Plus)
+├── migrate-miniprogram/ # 微信小程序 (UniApp)
+├── sql/                 # 数据库初始化脚本
+└── docker-compose.yml   # Docker 编排
 ```
 
 ## 技术栈
