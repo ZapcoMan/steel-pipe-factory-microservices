@@ -33,3 +33,4 @@ vue/node_modules/
 target
 ### VS Code ###
 .vscode/
+node_modules/
