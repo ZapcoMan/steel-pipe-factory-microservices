@@ -13,7 +13,7 @@ steel-pipe-factory-microservices/
 ├── file-service/       # 文件服务 (端口 8084) — 文件上传下载
 ├── common/             # 公共模块 — R/ResultCodeEnum/Exception/Redis/CORS
 ├── admin-frontend/     # Vue 管理后台 (Element Plus)
-├── uniapp/             # 微信小程序 (UniApp)
+├── migrate-miniprogram/             # 微信小程序 (UniApp)
 ├── sql/                # 数据库初始化脚本
 └── docker-compose.yml  # Docker 编排
 ```
