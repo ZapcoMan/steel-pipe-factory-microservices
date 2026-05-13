@@ -1,0 +1,133 @@
+version: '3.8'
+
+services:
+  nacos:
+    image: nacos/nacos-server:v2.4.3
+    container_name: steel-nacos
+    environment:
+      - MODE=standalone
+      - JVM_XMS=256m
+      - JVM_XMX=256m
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    restart: unless-stopped
+
+  redis:
+    image: redis:7
+    container_name: steel-redis
+    command: redis-server --requirepass admin
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  mysql:
+    image: mysql:8.0
+    container_name: steel-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_CHARSET=utf8mb4
+      - TZ=Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./sql/init-databases.sql:/docker-entrypoint-initdb.d/init-databases.sql
+      - mysql-data:/var/lib/mysql
+    restart: unless-stopped
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: api-gateway/Dockerfile
+    container_name: steel-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR=nacos:8848
+    depends_on:
+      - nacos
+    restart: unless-stopped
+
+  user-service:
+    build:
+      context: .
+      dockerfile: user-service/Dockerfile
+    container_name: steel-user-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/steel_user_db?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PASSWORD=admin
+      - SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR=nacos:8848
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+    restart: unless-stopped
+
+  product-service:
+    build:
+      context: .
+      dockerfile: product-service/Dockerfile
+    container_name: steel-product-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/steel_product_db?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PASSWORD=admin
+      - SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR=nacos:8848
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+    restart: unless-stopped
+
+  content-service:
+    build:
+      context: .
+      dockerfile: content-service/Dockerfile
+    container_name: steel-content-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/steel_content_db?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2b8&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PASSWORD=admin
+      - SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR=nacos:8848
+    depends_on:
+      - mysql
+      - redis
+      - nacos
+    restart: unless-stopped
+
+  file-service:
+    build:
+      context: .
+      dockerfile: file-service/Dockerfile
+    container_name: steel-file-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PASSWORD=admin
+      - SPRING_CLOUD_NACOS_DISCOVERY_SERVER_ADDR=nacos:8848
+      - FILE_STORAGE_PATH=/steelfactory/files/
+      - FILE_DOWNLOAD_URL=http://api-gateway:8080/files/download
+    volumes:
+      - file-storage:/steelfactory/files
+    depends_on:
+      - redis
+      - nacos
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
+  file-storage:

@@ -1,0 +1,86 @@
+{
+	"pages": [
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/calculator/calculator",
+			"style": {
+				"navigationBarTitleText": "计算器"
+			}
+		},
+		{
+			"path": "pages/about/about",
+			"style": {
+				"navigationBarTitleText": "关于"
+			}
+		},
+      {
+        "path": "pages/calculator/detail",
+        "style": {
+          "navigationBarTitleText": "计算详情"
+        }
+      },
+      {
+        "path": "pages/price/price",
+        "style": {
+          "navigationBarTitleText": "价格行情"
+        }
+      },
+      {
+        "path": "pages/tech-data/tech-data",
+        "style": {
+          "navigationBarTitleText": "技术资料"
+        }
+      },
+      {
+        "path": "pages/sample/sample",
+        "style": {
+          "navigationBarTitleText": "样品展示"
+        }
+      },
+      {
+        "path": "pages/news-detail/news-detail",
+        "style": {
+          "navigationBarTitleText": "资讯详情",
+          "navigationBarBackgroundColor": "#2c3e50",
+          "navigationBarTextStyle": "white"
+        }
+      }
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "钢铁工厂",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#7A7E83",
+		"selectedColor": "#007AFF",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [
+			{
+				"pagePath": "pages/index/index",
+				"iconPath": "/static/tabbar/icons/home.png",
+				"selectedIconPath": "/static/tabbar/icons/home.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/calculator/calculator",
+				"iconPath": "/static/tabbar/icons/calculator.png",
+				"selectedIconPath": "/static/tabbar/icons/calculator.png",
+				"text": "计算器"
+			},
+			{
+				"pagePath": "pages/about/about",
+				"iconPath": "/static/tabbar/icons/about.png",
+				"selectedIconPath": "/static/tabbar/icons/about.png",
+				"text": "关于"
+			}
+		]
+	}
+}

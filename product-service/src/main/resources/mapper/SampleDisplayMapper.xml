@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.steelpipe.product.mapper.SampleDisplayMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="com.steelpipe.product.entity.SampleDisplay">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="spec" property="spec"/>
+        <result column="material" property="material"/>
+        <result column="features" property="features"/>
+        <result column="application" property="application"/>
+        <result column="image" property="image"/>
+        <result column="category" property="category"/>
+        <result column="is_new" property="isNew"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+    </resultMap>
+
+    <!-- 查询所有样品数据 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT * FROM `sample_display`
+        ORDER BY `is_new` DESC, id ASC
+    </select>
+
+    <!-- 分页查询样品数据 -->
+    <select id="selectPage" resultMap="BaseResultMap">
+        SELECT * FROM `sample_display`
+        <where>
+            <if test="name != null and name != ''">
+                AND MATCH(`name`, `features`) AGAINST(#{name} IN NATURAL LANGUAGE MODE)
+            </if>
+            <if test="category != null and category != ''">
+                AND `category` = #{category}
+            </if>
+        </where>
+        ORDER BY `is_new` DESC, id ASC
+    </select>
+
+    <!-- 根据 ID 查询样品数据 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM `sample_display`
+        WHERE id = #{id}
+    </select>
+
+    <!-- 插入样品数据 -->
+    <insert id="insert" parameterType="com.steelpipe.product.entity.SampleDisplay" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `sample_display` (
+            `name`, `spec`, `material`, `features`, `application`,
+            `image`, `category`, `is_new`, `create_time`, `update_time`
+        ) VALUES (
+            #{name}, #{spec}, #{material}, #{features}, #{application},
+            #{image}, #{category}, #{isNew}, NOW(), NOW()
+        )
+    </insert>
+
+    <!-- 更新样品数据 -->
+    <update id="updateById" parameterType="com.steelpipe.product.entity.SampleDisplay">
+        UPDATE `sample_display`
+        SET `name` = #{name}, `spec` = #{spec}, `material` = #{material},
+            `features` = #{features}, `application` = #{application}, `image` = #{image},
+            `category` = #{category}, `is_new` = #{isNew}, `update_time` = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <!-- 删除样品数据 -->
+    <delete id="deleteById">
+        DELETE FROM `sample_display` WHERE id = #{id}
+    </delete>
+</mapper>

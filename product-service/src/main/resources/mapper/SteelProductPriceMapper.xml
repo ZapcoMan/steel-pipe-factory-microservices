@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.steelpipe.product.mapper.SteelProductPriceMapper">
+
+    <insert id="insert">
+        insert into `steel_product_price` (`name`, `spec`, `price`, `change`, `date`)
+        values (#{name}, #{spec}, #{price}, #{change}, #{date})
+    </insert>
+
+    <update id="updateById">
+        update `steel_product_price`
+        set `name` = #{name}, `spec` = #{spec}, `price` = #{price}, `change` = #{change}, `date` = #{date}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        delete from `steel_product_price` where id = #{id}
+    </delete>
+
+    <delete id="deleteBatch">
+        delete from `steel_product_price` where id in
+        <foreach collection="list" item="item" open="(" separator="," close=")">
+            #{item.id}
+        </foreach>
+    </delete>
+
+    <select id="selectAll" resultType="com.steelpipe.product.entity.SteelProductPrice">
+        select * from `steel_product_price`
+        <where>
+            <if test="name != null and name != ''">
+                `name` like concat('%', #{name}, '%')
+            </if>
+            <if test="spec != null and spec != ''">
+                and `spec` like concat('%', #{spec}, '%')
+            </if>
+            <if test="date != null and date != ''">
+                and `date` like concat('%', #{date}, '%')
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+</mapper>

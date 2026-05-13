@@ -1,0 +1,74 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: admin
+      database: 0
+      timeout: 3000ms
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      routes:
+        # 管理前端 /api/v1 前缀路由（兼容原版 Vue Admin）
+        - id: user-service-v1
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/login,/api/v1/updatePassword,/api/v1/admin/**,/api/v1/user/**,/api/v1/hello
+          filters:
+            - StripPrefix=2
+
+        # 小程序和直连路由（无前缀）
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/login,/updatePassword,/admin/**,/user/**,/hello
+
+        - id: product-service-v1
+          uri: lb://product-service
+          predicates:
+            - Path=/api/v1/steelProductPrice/**,/api/v1/sampleDisplay/**
+          filters:
+            - StripPrefix=2
+
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/steelProductPrice/**,/sampleDisplay/**
+
+        - id: content-service-v1
+          uri: lb://content-service
+          predicates:
+            - Path=/api/v1/aboutUs/**,/api/v1/featuredCompany/**,/api/v1/obtainInformation/**,/api/v1/uniapp/**
+          filters:
+            - StripPrefix=2
+
+        - id: content-service
+          uri: lb://content-service
+          predicates:
+            - Path=/aboutUs/**,/featuredCompany/**,/obtainInformation/**,/uniapp/**
+
+        - id: file-service-v1
+          uri: lb://file-service
+          predicates:
+            - Path=/api/v1/files/**
+          filters:
+            - StripPrefix=2
+
+        - id: file-service
+          uri: lb://file-service
+          predicates:
+            - Path=/files/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "*"
+            allowed-headers: "*"
+            allowed-methods: "*"
